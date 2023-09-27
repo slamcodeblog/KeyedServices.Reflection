@@ -1,7 +1,7 @@
 ﻿using SlamCodeBlog.KeyedServices.Reflection;
 using System.Reflection;
 
-namespace SlamCode.DependencyInjection.Reflection
+namespace SlamCodeBlog.KeyedServices.Reflection.Models
 {
     internal record InjectionParameter
     {
@@ -19,15 +19,15 @@ namespace SlamCode.DependencyInjection.Reflection
             ServiceKey = serviceKey;
         }
 
-        public bool CanBeResolved(IServiceCollection services)  => TryExtractResolvingType(services);
+        public bool CanBeResolved(IServiceCollection services) => TryExtractResolvingType(services);
 
         public object Resolve(IServiceProvider serviceProvider) => serviceProvider.GetRequiredService(
-            resolvingType 
+            resolvingType
             ?? throw new InvalidOperationException($"Keyed dependency resolving type could not be determined for parameter of type '{ParameterType.FullName}'. Make sure you provided equal keys for service and parameter."));
 
         private bool TryExtractResolvingType(IServiceCollection services)
         {
-            if(resolvingType != null)
+            if (resolvingType != null)
             {
                 return true;
             }
@@ -44,7 +44,7 @@ namespace SlamCode.DependencyInjection.Reflection
                 .ToList();
 
             resolvingType = implementationsWithKey
-                .FirstOrDefault(sd => object.Equals(sd.ImplementationType?.GetCustomAttribute<ServiceKeyAttribute>()?.Key, ServiceKey))
+                .FirstOrDefault(sd => Equals(sd.ImplementationType?.GetCustomAttribute<ServiceKeyAttribute>()?.Key, ServiceKey))
                 ?.ImplementationType;
 
             return resolvingType != null;

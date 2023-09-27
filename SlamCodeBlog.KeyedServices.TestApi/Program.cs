@@ -1,5 +1,5 @@
 using SlamCode.DependencyInjection.Reflection;
-using SlamCode.DependencyInjection.Reflection.TestApi.Services;
+using SlamCodeBlog.KeyedServices.TestApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,6 @@
-﻿namespace SlamCode.DependencyInjection.Reflection.TestApi.Services
+﻿using SlamCodeBlog.KeyedServices.Reflection;
+
+namespace SlamCodeBlog.KeyedServices.TestApi.Services
 {
     [ServiceKey("NonNegative")]
     public class RandomNonNegativeNumberService : IRandomNumberService

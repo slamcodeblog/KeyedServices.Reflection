@@ -1,4 +1,4 @@
-﻿namespace SlamCode.DependencyInjection.Reflection.TestApi.Services.Api
+﻿namespace SlamCodeBlog.KeyedServices.TestApi.Services.Api
 {
     public interface IApiService
     {

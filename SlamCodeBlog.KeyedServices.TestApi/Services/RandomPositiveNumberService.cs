@@ -1,6 +1,7 @@
-﻿using SlamCode.DependencyInjection.Reflection.TestApi.Services.Api;
+﻿using SlamCodeBlog.KeyedServices.Reflection;
+using SlamCodeBlog.KeyedServices.TestApi.Services.Api;
 
-namespace SlamCode.DependencyInjection.Reflection.TestApi.Services
+namespace SlamCodeBlog.KeyedServices.TestApi.Services
 {
     [ServiceKey("Positive")]
     public class RandomPositiveNumberService : IRandomNumberService

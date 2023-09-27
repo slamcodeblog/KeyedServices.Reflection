@@ -1,4 +1,4 @@
-﻿namespace SlamCode.DependencyInjection.Reflection.TestApi.Services
+﻿namespace SlamCodeBlog.KeyedServices.TestApi.Services
 {
     public class RandomNumberService : IRandomNumberService
     {

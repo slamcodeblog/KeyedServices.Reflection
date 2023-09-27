@@ -1,13 +1,13 @@
 ﻿using SlamCodeBlog.KeyedServices.Reflection;
 using System.Reflection;
 
-namespace SlamCode.DependencyInjection.Reflection
+namespace SlamCodeBlog.KeyedServices.Reflection.Models
 {
     internal class InjectionServiceDescriptor
     {
         private InjectionServiceDescriptor(
-            Type serviceType, 
-            Type implementationType, 
+            Type serviceType,
+            Type implementationType,
             IEnumerable<InjectionConstructor> constructors,
             object? key)
         {
@@ -33,10 +33,10 @@ namespace SlamCode.DependencyInjection.Reflection
                 : resolveableConstructor.Resolve(provider);
         }
 
-        public static InjectionServiceDescriptor Create<TService, TImplementation>() 
+        public static InjectionServiceDescriptor Create<TService, TImplementation>()
         {
             var implType = typeof(TImplementation);
-            return new(typeof(TService), implType, 
+            return new(typeof(TService), implType,
                 implType.GetConstructors()
                     .Select(InjectionConstructor.Create),
                 implType.GetCustomAttribute<ServiceKeyAttribute>()?.Key

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SlamCode.DependencyInjection.Reflection
+namespace SlamCodeBlog.KeyedServices.Reflection.Models
 {
     internal record InjectionConstructor
     {

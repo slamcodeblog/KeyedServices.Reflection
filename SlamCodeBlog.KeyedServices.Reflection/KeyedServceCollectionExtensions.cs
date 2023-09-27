@@ -1,5 +1,6 @@
 ﻿using Scrutor;
 using SlamCodeBlog.KeyedServices.Reflection;
+using SlamCodeBlog.KeyedServices.Reflection.Models;
 using System.Reflection;
 
 namespace SlamCode.DependencyInjection.Reflection
