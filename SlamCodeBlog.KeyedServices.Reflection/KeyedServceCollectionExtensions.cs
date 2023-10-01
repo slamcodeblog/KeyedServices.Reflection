@@ -27,6 +27,43 @@ namespace SlamCode.DependencyInjection.Reflection
             return services;
         }
 
+        public static TService ResolveWithKeyedDependencies<TService>(IServiceCollection services, IServiceProvider serviceProvider)
+            where TService : class
+        {
+            var constructor = GetConstructorForResolution(typeof(TService));
+            if (constructor is null)
+                throw new InvalidOperationException($"Could not find constructor to resolve for service {typeof(TService).FullName}.");
+
+            return ResolveKeyedDependencies<TService>(constructor, services, serviceProvider);
+        }
+
+        private static ConstructorInfo? GetConstructorForResolution(this Type type) =>
+            type.GetConstructors()
+                .OrderByDescending(ci => ci.GetCustomAttribute<ActivatorUtilitiesConstructorAttribute>() is not null)
+                .ThenByDescending(ci => ci.GetParameters().Length)
+                .FirstOrDefault();
+
+        private static TService ResolveKeyedDependencies<TService>(this ConstructorInfo constructorInfo, IServiceCollection services, IServiceProvider serviceProvider)
+        {
+            var parametersValues = constructorInfo.GetParameters()
+                .Select(p => serviceProvider.GetRequiredService(FindResolvingType(p, services)))
+                .ToArray();
+
+            return (TService)Activator.CreateInstance(constructorInfo.ReflectedType!, parametersValues)!;
+        }
+
+        private static Type FindResolvingType(ParameterInfo parameter, IServiceCollection services)
+        {
+            var parameterServiceKey = parameter.GetCustomAttribute<ServiceKeyAttribute>()!.Key;
+
+            if (parameterServiceKey is null)
+                return parameter.ParameterType;
+
+            return services.FirstOrDefault(sd => parameter.ParameterType.IsAssignableFrom(sd.ServiceType)
+                && sd.ImplementationType?.GetCustomAttribute<ServiceKeyAttribute>()?.Key == parameterServiceKey)?
+                .ImplementationType ?? throw new InvalidOperationException($"Keyed dependency resolving type could not be determined for parameter of type '{ParameterType.FullName}'. Make sure you provided equal keys for service and parameter.");
+        }
+
         public static IServiceCollection AddWithKeyedDependencies<TImplementation>(this IServiceCollection services, ServiceLifetime lifetime)
             where TImplementation : class
             => AddWithKeyedDependencies<TImplementation, TImplementation>(services, lifetime);

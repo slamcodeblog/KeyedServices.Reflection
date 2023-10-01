@@ -13,7 +13,7 @@ namespace SlamCodeBlog.KeyedServices.Reflection.Models
         {
             ServiceType = serviceType;
             ImplementationType = implementationType;
-            Constructors = constructors;
+            Constructors = OrderByPrecedence(constructors);
             Key = key;
             UsesKeyedDependencies = constructors.Any(ic => ic.HasKeyedServiceParameter);
         }
@@ -42,5 +42,9 @@ namespace SlamCodeBlog.KeyedServices.Reflection.Models
                 implType.GetCustomAttribute<ServiceKeyAttribute>()?.Key
                 );
         }
+
+        private static IEnumerable<InjectionConstructor> OrderByPrecedence(IEnumerable<InjectionConstructor> constructors) =>
+            constructors.OrderByDescending(ic => ic.IsActivatorConstructor)
+            .ThenByDescending(ic => ic.ParametersCount);
     }
 }
