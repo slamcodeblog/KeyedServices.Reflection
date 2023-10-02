@@ -49,7 +49,7 @@ namespace SlamCode.DependencyInjection.Reflection
                 .Select(p => serviceProvider.GetRequiredService(FindResolvingType(p, services)))
                 .ToArray();
 
-            return (TService)Activator.CreateInstance(constructorInfo.ReflectedType!, parametersValues)!;
+            return (TService)constructorInfo.Invoke(parametersValues);
         }
 
         private static Type FindResolvingType(ParameterInfo parameter, IServiceCollection services)
