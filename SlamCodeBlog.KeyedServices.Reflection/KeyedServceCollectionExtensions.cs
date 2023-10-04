@@ -61,7 +61,7 @@ namespace SlamCode.DependencyInjection.Reflection
 
             return services.FirstOrDefault(sd => parameter.ParameterType.IsAssignableFrom(sd.ServiceType)
                 && sd.ImplementationType?.GetCustomAttribute<ServiceKeyAttribute>()?.Key == parameterServiceKey)?
-                .ImplementationType ?? throw new InvalidOperationException($"Keyed dependency resolving type could not be determined for parameter of type '{ParameterType.FullName}'. Make sure you provided equal keys for service and parameter.");
+                .ImplementationType ?? throw new InvalidOperationException($"Keyed dependency resolving type could not be determined for parameter of type '{parameter.ParameterType.FullName}'. Make sure you provided equal keys for service and parameter.");
         }
 
         public static IServiceCollection AddWithKeyedDependencies<TImplementation>(this IServiceCollection services, ServiceLifetime lifetime)
